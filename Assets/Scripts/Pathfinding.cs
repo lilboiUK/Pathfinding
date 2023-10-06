@@ -13,9 +13,8 @@ public class Pathfinding : MonoBehaviour
 
     Node currentNode;
     Node[,] nodeGrid;
-    BinaryHeap<Node> openList;
+    NodeBinaryHeap openList;
     HashSet<Node> closedList;
-    List<Node> path;
 
     void Start()
     {
@@ -26,7 +25,7 @@ public class Pathfinding : MonoBehaviour
         nodeGrid = new Node[width, height];
         CreateGrid();
 
-        openList = new BinaryHeap<Node>();
+        openList = new NodeBinaryHeap();
         closedList = new HashSet<Node>();
 
         openList.Insert(nodeGrid[startX, startY]);
@@ -178,10 +177,7 @@ public class Pathfinding : MonoBehaviour
         int dx = Mathf.Abs(current.x - neighbor.x);
         int dy = Mathf.Abs(current.y - neighbor.y);
 
-        int diagonalCost = 14;
-        int straightCost = 10;
-
-        return diagonalCost * Mathf.Min(dx, dy) + straightCost * (dx + dy);
+        return 14 * Mathf.Min(dx, dy) + 10 * (dx + dy); // Diagonal cost = 14 | Straight cost = 10
     }
     int CalculateHCost(Node node, Node targetNode)
     {
@@ -190,4 +186,3 @@ public class Pathfinding : MonoBehaviour
         return 10 * (dx + dy);
     }
 }
-

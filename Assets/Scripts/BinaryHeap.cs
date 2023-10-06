@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class BinaryHeap<T> where T : IComparable<T>
+public class NodeBinaryHeap
 {
-    List<T> heap;
-    HashSet<T> elementsInHeap;
+    List<Node> heap;
+    HashSet<Node> elementsInHeap;
 
-    public BinaryHeap()
+    public NodeBinaryHeap()
     {
-        heap = new List<T>();
-        elementsInHeap = new HashSet<T>();
+        heap = new List<Node>();
+        elementsInHeap = new HashSet<Node>();
     }
-    public int Count => heap.Count;
-    public void Insert(T item)
+    public void Insert(Node item)
     {
         heap.Add(item);
         elementsInHeap.Add(item);
 
-        int currentIndex = Count - 1;
+        int currentIndex = heap.Count - 1;
         while (currentIndex > 0)
         {
             int parentIndex = (currentIndex - 1) / 2;
@@ -30,19 +29,19 @@ public class BinaryHeap<T> where T : IComparable<T>
             currentIndex = parentIndex;
         }
     }
-    public bool Contains(T item)
+    public bool Contains(Node item)
     {
         return elementsInHeap.Contains(item);
     }
-    public T ExtractMin()
+    public Node ExtractMin()
     {
-        if (Count == 0)
+        if (heap.Count == 0)
         {
             throw new InvalidOperationException("Heap is empty.");
         }
 
-        T minItem = heap[0];
-        int lastIndex = Count - 1;
+        Node minItem = heap[0];
+        int lastIndex = heap.Count - 1;
         heap[0] = heap[lastIndex];
         heap.RemoveAt(lastIndex);
 
@@ -53,12 +52,12 @@ public class BinaryHeap<T> where T : IComparable<T>
             int rightChildIndex = currentIndex * 2 + 2;
             int smallestChildIndex = currentIndex;
 
-            if (leftChildIndex < Count && heap[leftChildIndex].CompareTo(heap[smallestChildIndex]) < 0)
+            if (leftChildIndex < heap.Count && heap[leftChildIndex].CompareTo(heap[smallestChildIndex]) < 0)
             {
                 smallestChildIndex = leftChildIndex;
             }
 
-            if (rightChildIndex < Count && heap[rightChildIndex].CompareTo(heap[smallestChildIndex]) < 0)
+            if (rightChildIndex < heap.Count && heap[rightChildIndex].CompareTo(heap[smallestChildIndex]) < 0)
             {
                 smallestChildIndex = rightChildIndex;
             }
@@ -76,7 +75,7 @@ public class BinaryHeap<T> where T : IComparable<T>
     }
     private void Swap(int index1, int index2)
     {
-        T temp = heap[index1];
+        Node temp = heap[index1];
         heap[index1] = heap[index2];
         heap[index2] = temp;
     }
